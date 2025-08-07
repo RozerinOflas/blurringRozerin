@@ -392,7 +392,7 @@ class PackageConfigs(Configs):
 class PackageModel(Package):
     configs: PackageConfigs
     type: Literal["component"] = "component"
-    name: Literal["DrawBoundingBox"] = "DrawBoundingBox"
+    name: Literal["BlurringRozerin"] = "BlurringRozerin"
 
     class Config:
         title = "Package Model"
