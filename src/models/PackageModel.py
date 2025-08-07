@@ -1,7 +1,292 @@
 
 from pydantic import Field, validator
-from typing import List, Optional, Union, Literal
-from sdks.novavision.src.base.model import Package, Image, Inputs, Configs, Outputs, Response, Request, Output, Input, Config
+from typing import List, Union, Literal
+from sdks.novavision.src.base.model import Package, Input, Output, Image, Config, Inputs, Configs, Outputs, Response, Request, Detection
+
+
+class ConfigCustomColors(Config):
+    """
+        List of colors to use for annotations '#FF0000, #00FF00, #0000FF'
+    """
+    name: Literal["CustomColors"] = "CustomColors"
+    value: str
+    type: Literal["string"] = "string"
+    field: Literal["textInput"] = "textInput"
+
+    class Config:
+        title = "Custom Colors"
+
+
+class ColorPaletteCustom(Config):
+    name: Literal["ColorPaletteCustom"] = "ColorPaletteCustom"
+    configCustomColors: ConfigCustomColors
+    value: Literal["custom"] = "custom"
+    type: Literal["string"] = "string"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title = "Custom"
+
+
+class ConfigPaletteSize(Config):
+    """
+        Number of colors in the color palette. Applies when using a matplotlib `color_palette`.
+    """
+    name: Literal["ConfigPaletteSize"] = "ConfigPaletteSize"
+    value: int = Field(ge=1, le=100)
+    type: Literal["number"] = "number"
+    field: Literal["textInput"] = "textInput"
+
+    class Config:
+        title = "Color Palette Size"
+
+
+class ColorPaletteTab20c(Config):
+    name: Literal["ColorPaletteTab20c"] = "ColorPaletteTab20c"
+    configPaletteSize: ConfigPaletteSize
+    value: Literal["tab20c"] = "tab20c"
+    type: Literal["string"] = "string"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title = "Tab20c"
+
+
+class ColorPaletteTab20b(Config):
+    name: Literal["ColorPaletteTab20b"] = "ColorPaletteTab20b"
+    configPaletteSize: ConfigPaletteSize
+    value: Literal["tab20b"] = "tab20b"
+    type: Literal["string"] = "string"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title = "Tab20b"
+
+
+class ColorPaletteTab20(Config):
+    name: Literal["ColorPaletteTab20"] = "ColorPaletteTab20"
+    configPaletteSize: ConfigPaletteSize
+    value: Literal["tab20"] = "tab20"
+    type: Literal["string"] = "string"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title = "Tab20"
+
+
+class ColorPaletteTab10(Config):
+    name: Literal["ColorPaletteTab10"] = "ColorPaletteTab10"
+    configPaletteSize: ConfigPaletteSize
+    value: Literal["tab10"] = "tab10"
+    type: Literal["string"] = "string"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title = "Tab10"
+
+
+class ColorPaletteSet3(Config):
+    name: Literal["ColorPaletteSet3"] = "ColorPaletteSet3"
+    configPaletteSize: ConfigPaletteSize
+    value: Literal["Set3"] = "Set3"
+    type: Literal["string"] = "string"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title = "Set3"
+
+
+class ColorPaletteSet2(Config):
+    name: Literal["ColorPaletteSet2"] = "ColorPaletteSet2"
+    configPaletteSize: ConfigPaletteSize
+    value: Literal["Set2"] = "Set2"
+    type: Literal["string"] = "string"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title = "Set2"
+
+
+class ColorPaletteSet1(Config):
+    name: Literal["ColorPaletteSet1"] = "ColorPaletteSet1"
+    configPaletteSize: ConfigPaletteSize
+    value: Literal["Set1"] = "Set1"
+    type: Literal["string"] = "string"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title = "Set1"
+
+
+class ColorPaletteDark2(Config):
+    name: Literal["ColorPaletteDark2"] = "ColorPaletteDark2"
+    configPaletteSize: ConfigPaletteSize
+    value: Literal["Dark2"] = "Dark2"
+    type: Literal["string"] = "string"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title = "Dark2"
+
+
+class ColorPaletteAccent(Config):
+    name: Literal["ColorPaletteAccent"] = "ColorPaletteAccent"
+    configPaletteSize: ConfigPaletteSize
+    value: Literal["Accent"] = "Accent"
+    type: Literal["string"] = "string"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title = "Accent"
+
+
+class ColorPalettePaired(Config):
+    name: Literal["ColorPalettePaired"] = "ColorPalettePaired"
+    configPaletteSize: ConfigPaletteSize
+    value: Literal["Paired"] = "Paired"
+    type: Literal["string"] = "string"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title = "Paired"
+
+
+class ColorPalettePastel2(Config):
+    name: Literal["ColorPalettePastel2"] = "ColorPalettePastel2"
+    configPaletteSize: ConfigPaletteSize
+    value: Literal["Pastel2"] = "Pastel2"
+    type: Literal["string"] = "string"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title = "Pastel2"
+
+
+class ColorPalettePastel1(Config):
+    name: Literal["ColorPalettePastel1"] = "ColorPalettePastel1"
+    configPaletteSize: ConfigPaletteSize
+    value: Literal["Pastel1"] = "Pastel1"
+    type: Literal["string"] = "string"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title = "Pastel1"
+
+
+class ConfigColorPalette(Config):
+    """
+        Color palette to use for annotations.
+    """
+    name: Literal["ConfigColorPalette"] = "ConfigColorPalette"
+    value: Union[
+        ColorPalettePastel1,
+        ColorPalettePastel2,
+        ColorPalettePaired,
+        ColorPaletteAccent,
+        ColorPaletteDark2,
+        ColorPaletteSet1,
+        ColorPaletteSet2,
+        ColorPaletteSet3,
+        ColorPaletteTab10,
+        ColorPaletteTab20,
+        ColorPaletteTab20b,
+        ColorPaletteTab20c,
+        ColorPaletteCustom
+    ]
+    type: Literal["object"] = "object"
+    field: Literal["dependentDropdownlist"] = "dependentDropdownlist"
+
+    class Config:
+        title = "Color Palette"
+
+
+class ColorAxisClass(Config):
+    name: Literal["Class"] = "Class"
+    value: Literal["Class"] = "Class"
+    type: Literal["string"] = "string"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title = "Class"
+
+
+class ColorAxisIndex(Config):
+    name: Literal["Index"] = "Index"
+    value: Literal["Index"] = "Index"
+    type: Literal["string"] = "string"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title = "Index"
+
+
+class ColorAxisTrack(Config):
+    name: Literal["Track"] = "Track"
+    value: Literal["Track"] = "Track"
+    type: Literal["string"] = "string"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title = "Track"
+
+
+class ConfigColorAxis(Config):
+    """
+        Determines bounding box colors based on class, index or track ID.
+    """
+    name: Literal["ConfigColorAxis"] = "ConfigColorAxis"
+    value: Union[ColorAxisClass, ColorAxisIndex, ColorAxisTrack]
+    type: Literal["object"] = "object"
+    field: Literal["dropdownlist"] = "dropdownlist"
+
+    class Config:
+        title = "Color Axis"
+
+
+class ConfigRadius(Config):
+    """
+        Radius of the circle in pixels.
+    """
+    name: Literal["ConfigRadius"] = "ConfigRadius"
+    value: int = Field(default=0, ge=0, le=50)
+    type: Literal["number"] = "number"
+    field: Literal["textInput"] = "textInput"
+
+    class Config:
+        title = "Radius"
+
+
+class ConfigThickness(Config):
+    """
+        Thickness of the bounding box in pixels.
+    """
+    name: Literal["ConfigThickness"] = "ConfigThickness"
+    value: int = Field(ge=1, le=10)
+    type: Literal["number"] = "number"
+    field: Literal["textInput"] = "textInput"
+
+    class Config:
+        title = "Thickness"
+
+
+class DrawBboxConfigs(Configs):
+    configColorAxis: ConfigColorAxis
+    configColorPalette: ConfigColorPalette
+    configThickness: ConfigThickness
+    configRadius: ConfigRadius
+
+
+    class Config:
+        title = "Draw Bounding Box Configurations"
+
+
+class InputDetections(Input):
+    name: Literal["inputDetections"] = "inputDetections"
+    value: List[Detection]
+    type: str = "list"
+
+    class Config:
+        title = "Detections"
 
 
 class InputImage(Input):
@@ -23,7 +308,7 @@ class InputImage(Input):
 
 class OutputImage(Output):
     name: Literal["outputImage"] = "outputImage"
-    value: Union[List[Image],Image]
+    value: Union[List[Image], Image]
     type: str = "object"
 
     @validator("type", pre=True, always=True)
@@ -33,74 +318,21 @@ class OutputImage(Output):
             return "object"
         elif isinstance(value, list):
             return "list"
-
     class Config:
         title = "Image"
 
 
-class KeepSideFalse(Config):
-    name: Literal["False"] = "False"
-    value: Literal[False] = False
-    type: Literal["bool"] = "bool"
-    field: Literal["option"] = "option"
-
-    class Config:
-        title = "Disable"
-
-
-class KeepSideTrue(Config):
-    name: Literal["True"] = "True"
-    value: Literal[True] = True
-    type: Literal["bool"] = "bool"
-    field: Literal["option"] = "option"
-
-    class Config:
-        title = "Enable"
-
-
-class KeepSideBBox(Config):
-    """
-        Rotate image without catting off sides.
-    """
-    name: Literal["KeepSide"] = "KeepSide"
-    value: Union[KeepSideTrue, KeepSideFalse]
-    type: Literal["object"] = "object"
-    field: Literal["dropdownlist"] = "dropdownlist"
-
-    class Config:
-        title = "Keep Sides"
-
-
-class Degree(Config):
-    """
-        Positive angles specify counterclockwise rotation while negative angles indicate clockwise rotation.
-    """
-    name: Literal["Degree"] = "Degree"
-    value: int = Field(ge=-359.0, le=359.0,default=0)
-    type: Literal["number"] = "number"
-    field: Literal["textInput"] = "textInput"
-    placeHolder: Literal["[-359, 359]"] = "[-359, 359]"
-
-    class Config:
-        title = "Angle"
-
-
-class PackageInputs(Inputs):
+class DrawBboxInputs(Inputs):
     inputImage: InputImage
+    inputDetections: InputDetections
+
+    class Config:
+        title = "Draw Bounding Box Inputs"
 
 
-class PackageConfigs(Configs):
-    degree: Degree
-    drawBBox: KeepSideBBox
-
-
-class PackageOutputs(Outputs):
-    outputImage: OutputImage
-
-
-class PackageRequest(Request):
-    inputs: Optional[PackageInputs]
-    configs: PackageConfigs
+class DrawBboxRequest(Request):
+    inputs: Union[DrawBboxInputs]
+    configs: DrawBboxConfigs
 
     class Config:
         json_schema_extra = {
@@ -108,18 +340,28 @@ class PackageRequest(Request):
         }
 
 
-class PackageResponse(Response):
-    outputs: PackageOutputs
+class DrawBboxOutputs(Outputs):
+    outputImage: OutputImage
+
+    class Config:
+        title = "Draw Bounding Box Outputs"
 
 
-class PackageExecutor(Config):
-    name: Literal["Package"] = "Package"
-    value: Union[PackageRequest, PackageResponse]
+class DrawBboxResponse(Response):
+    outputs: DrawBboxOutputs
+
+    class Config:
+        title = "Draw Bounding Box Response"
+
+
+class DrawBboxExecutor(Config):
+    name: Literal["DrawBoundingBox"] = "DrawBoundingBox"
+    value: Union[DrawBboxRequest, DrawBboxResponse]
     type: Literal["object"] = "object"
     field: Literal["option"] = "option"
 
     class Config:
-        title = "Package"
+        title = "Draw Bounding Box Executor"
         json_schema_extra = {
             "target": {
                 "value": 0
@@ -129,7 +371,7 @@ class PackageExecutor(Config):
 
 class ConfigExecutor(Config):
     name: Literal["ConfigExecutor"] = "ConfigExecutor"
-    value: Union[PackageExecutor]
+    value: Union[DrawBboxExecutor]
     type: Literal["executor"] = "executor"
     field: Literal["dependentDropdownlist"] = "dependentDropdownlist"
 
@@ -143,8 +385,14 @@ class ConfigExecutor(Config):
 class PackageConfigs(Configs):
     executor: ConfigExecutor
 
+    class Config:
+        title = "Package Configurations"
+
 
 class PackageModel(Package):
     configs: PackageConfigs
     type: Literal["component"] = "component"
-    name: Literal["Package"] = "Package"
+    name: Literal["DrawBoundingBox"] = "DrawBoundingBox"
+
+    class Config:
+        title = "Package Model"
